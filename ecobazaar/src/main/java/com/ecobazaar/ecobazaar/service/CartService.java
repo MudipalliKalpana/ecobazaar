@@ -67,11 +67,7 @@ public class CartService {
 		return new CartSummaryDTO(cartItems,totalPrice,totalCarbon,ecoSuggestion);
 	}
 	
-	public boolean removeFromCart(Long id) {
-		if(cartRepository.existsById(id)) {
-			cartRepository.deleteById(id);
-			return true;
-		}
-		return false;
+	public void removeFromCart(Long id) {
+		cartRepository.deleteById(id);	
 	}
 }

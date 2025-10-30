@@ -16,7 +16,22 @@ public class RegisterRequest {
 	@NotBlank(message="password should not be empty")
 	@Size(min=5, message="password should have atleast 5 digits!")
 	private String password;
+	
+	private String role;
 
+	public RegisterRequest() {}
+
+	public RegisterRequest(@NotBlank(message = "Name is Required") String name,
+			@NotBlank(message = "EMail is Required") @Email(message = "Enter a valid email") String email,
+			@NotBlank(message = "Password is required") @Size(min = 4, message = "Password must be 4 characters") String password,
+			String role) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -27,6 +42,14 @@ public class RegisterRequest {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public void setEmail(String email) {

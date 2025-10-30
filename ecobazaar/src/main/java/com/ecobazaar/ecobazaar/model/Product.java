@@ -1,5 +1,6 @@
 package com.ecobazaar.ecobazaar.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,14 +17,16 @@ public class Product {
 	private String details;
 	private Double price;
 	private Double carbonImpact;
-	private Boolean ecoCertified;
+	@Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+	private Boolean ecoCertified=false;
 	private Long sellerId;
+	private String imageUrl;
 	
 	public Product() {
 		
 	}
 	public Product(Long id, String name, String details, Double price, Double carbonImpact, Boolean ecoCertified,
-			Long sellerId) {
+			Long sellerId, String imageUrl) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -32,6 +35,8 @@ public class Product {
 		this.carbonImpact = carbonImpact;
 		this.ecoCertified = ecoCertified;
 		this.sellerId = sellerId;
+		this.imageUrl=imageUrl;
+		
 	}
 	public Long getId() {
 		return id;
@@ -74,6 +79,12 @@ public class Product {
 	}
 	public void setSellerId(Long sellerId) {
 		this.sellerId = sellerId;
+	}
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	
 	

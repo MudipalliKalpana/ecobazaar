@@ -8,13 +8,28 @@ public class UserResponse {
 	private String email;
 	private String role;
 	private Integer ecoScore;
+	private String token;
 	
-	public UserResponse(Long id,String name,String email,String role,Integer ecoScore) {
+	public UserResponse() {
+		
+	}
+	
+	public UserResponse(Long id,String name,String email,String role,Integer ecoScore,String token) {
+		super();
 		this.id=id;
 		this.name=name;
 		this.email=email;
 		this.role=role;
 		this.ecoScore=ecoScore;
+		this.token=token;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public Long getId() {

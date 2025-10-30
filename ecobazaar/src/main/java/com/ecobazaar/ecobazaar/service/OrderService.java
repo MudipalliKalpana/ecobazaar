@@ -12,6 +12,8 @@ import com.ecobazaar.ecobazaar.repository.CartRepository;
 import com.ecobazaar.ecobazaar.repository.OrderRepository;
 import com.ecobazaar.ecobazaar.repository.ProductRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class OrderService {
 	
@@ -26,6 +28,7 @@ public class OrderService {
 		this.productRepository = productRepository;
 	}
 	
+	@Transactional
 	public Order checkOut(Long userId) {
 		List<CartItem> cartItems=cartRepository.findByUserId(userId);
 		

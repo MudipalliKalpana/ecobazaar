@@ -76,15 +76,30 @@ public class ProductController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String email = auth.getName();
 		User seller = userRepository.findByEmail(email)
-		.orElseThrow(() -> new RuntimeException("Seller not found"));
+									.orElseThrow(() -> new RuntimeException("Seller not found"));
 		product.setSellerId(seller.getId());
 		return productService.addProduct(product);
 	}
 	
 	@GetMapping
-	public List<Product> getAllProducts(){
-		return productService.getAllProducts();
+    public List<Product> listAllProducts() {
+        return productService.getAllProducts();
+    }
+	
+	@GetMapping("/{id}")
+	public Product getProductById(@PathVariable Long id) {
+	return productService.getProductById(id);
 	}
+	
+	@PreAuthorize("hasAnyRole('SELLER','ADMIN')")
+    @GetMapping("/seller")
+    public List<Product> listSellerProducts() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        User seller = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Seller not found"));
+        return productService.getProductsBySellerId(seller.getId());
+    }
+	
 	
 	@PreAuthorize("hasAnyRole('SELLER','ADMIN')")
 	@PutMapping("/{id}")
@@ -98,15 +113,15 @@ public class ProductController {
 		productService.deleteProduct(id);
 	}
 	
-	@GetMapping("/eco")
-	public List<Product> getEcoCertified(){
-		return productService.getEcoCertifiedProducts();
-	}
+//	@GetMapping("/eco")
+//	public List<Product> getEcoCertified(){
+//		return productService.getEcoCertifiedProducts();
+//	}
 	
-	@GetMapping("/eco/sorted")
-	public List<Product> getEcoCertifiedSorted(){
-		return productService.getEcoCertifiedSortedByCarbonImpact();
-	}
+//	@GetMapping("/eco/sorted")
+//	public List<Product> getEcoCertifiedSorted(){
+//		return productService.getEcoCertifiedSortedByCarbonImpact();
+//	}
 	
 
 }

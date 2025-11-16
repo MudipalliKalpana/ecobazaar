@@ -19,27 +19,37 @@ public class ProductService {
 	
 	//create
 	public Product addProduct(Product product) {
-		product.setEcoCertified(false);
-		return productRepository.save(product);
+		if (product.getEcoRequested() != null && product.getEcoRequested()) {
+            product.setEcoRequested(true);
+            product.setEcoCertified(false);
+        } else {
+            product.setEcoRequested(false);
+            product.setEcoCertified(false);
+        }
+        return productRepository.save(product);
 	}
-	
 	//read
 	public List<Product> getAllProducts(){
 		return productRepository.findAll();
 	}
 	
+	public List<Product> getProductsBySellerId(Long sellerId) {
+        return productRepository.findBySellerId(sellerId);
+    }
+	
 	//update
 	public Product updateProduct(Long id,Product product) {
 		return productRepository.findById(id)
-				.map(updatedProduct->{
-					updatedProduct.setName(product.getName());
-					updatedProduct.setDetails(product.getDetails());
-					updatedProduct.setPrice(product.getPrice());
-					updatedProduct.setCarbonImpact(product.getCarbonImpact());
-					updatedProduct.setSellerId(product.getSellerId());
-					return productRepository.save(updatedProduct);
-				})
-				.orElseThrow(()->new RuntimeException("Product not found"));
+	            .map(updatedProduct -> {
+	            	updatedProduct.setName(product.getName());
+	            	updatedProduct.setDetails(product.getDetails());
+	            	updatedProduct.setPrice(product.getPrice());
+	            	updatedProduct.setCarbonImpact(product.getCarbonImpact());
+	            	updatedProduct.setImageUrl(product.getImageUrl());
+	            	updatedProduct.setEcoRequested(product.getEcoRequested());
+	                return productRepository.save(updatedProduct);
+	            })
+	            .orElseThrow(() -> new RuntimeException("Product not found"));
 	}
 	
 	//delete
@@ -52,8 +62,13 @@ public class ProductService {
 		return productRepository.findByEcoCertifiedTrue();
 	}
 	
-	//filterByCarbonImpact
-	public List<Product> getEcoCertifiedSortedByCarbonImpact(){
-		return productRepository.findByEcoCertifiedTrueOrderByCarbonImpactAsc();
-	}
+	public Product getProductById(Long id) {
+		return productRepository.findById(id)
+		.orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+		}
+	
+//	//filterByCarbonImpact
+//	public List<Product> getEcoCertifiedSortedByCarbonImpact(){
+//		return productRepository.findByEcoCertifiedTrueOrderByCarbonImpactAsc();
+//	}
 }

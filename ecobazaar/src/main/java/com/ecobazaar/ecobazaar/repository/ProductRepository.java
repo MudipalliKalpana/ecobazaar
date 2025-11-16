@@ -11,4 +11,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>  {
 	List<Product> findByEcoCertifiedTrue();
 	List<Product> findByEcoCertifiedTrueOrderByCarbonImpactAsc();
 	Optional<Product> findFirstByEcoCertifiedTrueAndNameContainingIgnoreCase(String name);
+	List<Product> findByEcoRequestedTrue();
+	List<Product> findBySellerId(Long sellerId); 
 }

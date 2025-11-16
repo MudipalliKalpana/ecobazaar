@@ -21,6 +21,9 @@ public class Product {
 	private Boolean ecoCertified=false;
 	private Long sellerId;
 	private String imageUrl;
+	@Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean ecoRequested = false;
+
 	
 	public Product() {
 		
@@ -86,6 +89,11 @@ public class Product {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-	
+	public Boolean getEcoRequested() {
+		return ecoRequested;
+	}
+	public void setEcoRequested(Boolean ecoRequested) {
+		this.ecoRequested = ecoRequested;
+	}
 	
 }

@@ -26,16 +26,19 @@ public class AdminService {
 	}
 	
 	public Product approveProduct(Long id) {
-		Product product=productRepository.findById(id)
-				.orElseThrow(()->new RuntimeException("Product not found!"));
-		product.setEcoCertified(true);
-		return productRepository.save(product);
+		return productRepository.findById(id)
+		        .map(p -> {
+		            p.setEcoCertified(true);   // <= ADMIN APPROVES
+		            p.setEcoRequested(false);  // <= clear request
+		            return productRepository.save(p);
+		        })
+		        .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
 	}
 	
 	public User approveSeller(Long id) {
 		User user=userRepository.findById(id)
 				.orElseThrow(()->new RuntimeException("User not found!"));
-		user.setRole("SELLER");
+		user.setRole("ROLE_SELLER");
 		return userRepository.save(user);
 	}
 	

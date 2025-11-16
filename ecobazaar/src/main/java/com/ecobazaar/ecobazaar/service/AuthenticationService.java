@@ -27,7 +27,7 @@ public class AuthenticationService {
 			throw new RuntimeException("Email already exists!");
 		}
 		// Default role = ROLE_USER
-		String role = request.getRole() == null ? "ROLE_USER" : "ROLE_" + request.getRole().toUpperCase();
+		String role = "ROLE_USER";
 		if (role.equals("ROLE_ADMIN")) {
 			throw new RuntimeException("Cannot self-register as admin!");
 		}

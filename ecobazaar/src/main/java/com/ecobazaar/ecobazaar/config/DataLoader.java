@@ -16,13 +16,13 @@ public class DataLoader {
 		return args->{
 			if(userRepository.findByEmail("admin@ecobazaar.com").isEmpty()) {
 				User admin=new User();
-				admin.setName("Admin");
+				admin.setName("Role_Admin");
 				admin.setEmail("admin@ecobazaar.com");
 				admin.setPassword(encoder.encode("Admin@123"));
 				admin.setRole("ROLE_ADMIN");
 				admin.setEcoScore(0);
 				userRepository.save(admin);
-				System.out.println("Admin user created: admin@ecobazaar.com/ Admin@123");
+				System.out.println("Admin created successfully: admin@ecobazaar.com/ Admin@123");
 			}
 			else {
 				System.out.println("Admin user already exists.");

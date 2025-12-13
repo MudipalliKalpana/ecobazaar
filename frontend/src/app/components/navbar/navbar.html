@@ -1,80 +1,77 @@
-<mat-toolbar class="eco-toolbar fixed top-0 left-0 right-0 z-50 shadow-2xl border-b-4">
+<mat-toolbar class="eco-navbar fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-gray-900/70 dark:text-gray-100">
   <div class="flex items-center justify-between w-full max-w-7xl mx-auto px-6 py-3">
 
     <!-- Logo -->
-    <a routerLink="/" class="flex items-center gap-3 group">
-      <div class="text-4xl font-black tracking-tighter bg-gradient-to-r from-white to-emerald-200 
-                     bg-clip-text text-transparent group-hover:from-emerald-300 group-hover:to-white 
-                     transition-all duration-500">
-        EcoBazaar
-      </div>
+    <a routerLink="/" class="flex items-center font-bold gap-3 group">
+      <div class="eco-logo">EcoBazaar</div>
     </a>
 
-    <!-- Desktop Navigation – Role-Based -->
+    <!-- Desktop Navigation -->
     <nav class="hidden lg:flex items-center gap-10 flex-1 justify-center">
-
-      <!-- Normal User (Consumer) -->
+      <!-- Normal User -->
       <ng-container *ngIf="auth.isUser() && !auth.isSeller() && !auth.isAdmin()">
-        <a routerLink="/products" routerLinkActive="active-link"
-           class="text-white/90 hover:text-white font-semibold text-lg transition-all duration-300 hover:scale-110">
-          Shop
-        </a>
-        <a routerLink="/cart" routerLinkActive="active-link"
-           class="text-white/90 hover:text-white font-semibold text-lg transition-all duration-300 hover:scale-110 relative">
+        <a routerLink="/products" routerLinkActive="text-emerald-600 font-bold active-link" class="nav-link">Shop</a>
+
+        <a routerLink="/cart" routerLinkActive="text-emerald-600 font-bold active-link" class="nav-link relative">
           Cart
           <span *ngIf="cartCount > 0"
-                class="absolute -top-3 -right-6 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full animate-pulse shadow-lg">
+            class="absolute -top-3 -right-6 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full animate-pulse shadow-lg">
             {{ cartCount }}
           </span>
         </a>
-        <a routerLink="/dashboard"
-           class="text-emerald-200 hover:text-white font-bold text-lg transition-all duration-300">
+
+        <a routerLink="/dashboard" routerLinkActive="text-emerald-600 font-bold active-link" class="nav-link">
           My Impact
         </a>
       </ng-container>
 
-      <!-- Seller Only -->
+      <!-- Seller -->
       <ng-container *ngIf="auth.isSeller() && !auth.isAdmin()">
-        <a routerLink="/seller/dashboard"
-           class="text-emerald-200 hover:text-white font-bold text-xl transition-all duration-300 hover:scale-110">
+        <a
+          routerLink="/seller/dashboard"
+          class="px-4 py-2 border border-emerald-300 rounded-lg text-emerald-700 font-semibold transition-all duration-300 hover:bg-emerald-50 hover:scale-105 hover:shadow-md"
+        >
           Seller Hub
         </a>
       </ng-container>
 
-      <!-- Admin Only -->
+      <!-- Admin -->
       <ng-container *ngIf="auth.isAdmin()">
-        <a routerLink="/admin"
-           class="bg-white/20 backdrop-blur-md text-white font-black px-8 py-3 rounded-full 
-                  hover:bg-white/30 border-2 border-white/50 transition-all duration-300">
+        <a
+          routerLink="/admin"
+          class="px-6 py-2 rounded-full border border-emerald-500 text-emerald-700 font-bold card backdrop-blur-md"
+        >
           Admin Panel
         </a>
       </ng-container>
     </nav>
 
-    <!-- Right Side -->
+    <!-- Theme Toggle + Auth Buttons -->
     <div class="flex items-center gap-6">
+      <!-- Dark Mode Toggle -->
+      <button
+        (click)="toggleTheme()"
+        class="p-3 rounded-full bg-gray-200 dark:bg-gray-700 shadow-md hover:scale-110 transition"
+      >
+        <span *ngIf="isDark">🌙</span>
+        <span *ngIf="!isDark">☀️</span>
+      </button>
 
-      <!-- Guest Buttons -->
+      <!-- Guest -->
       <ng-container *ngIf="!auth.isLoggedIn()">
-        <button mat-stroked-button routerLink="/login"
-                class="border-2 border-white/50 text-white hover:bg-white/10 px-6 py-2 rounded-full font-semibold">
-          Login
-        </button>
-        <button mat-raised-button color="accent" routerLink="/register"
-                class="bg-white text-emerald-700 font-bold px-8 py-2 rounded-full hover:bg-emerald-50 shadow-lg">
-          Join Free
-        </button>
+        <button mat-stroked-button routerLink="/login" class="eco-auth-btn">Login</button>
+        <button mat-stroked-button routerLink="/register" class="eco-auth-btn">Register</button>
       </ng-container>
 
-      <!-- Logged In User -->
+      <!-- Logged In -->
       <ng-container *ngIf="auth.isLoggedIn()">
-        <div class="flex items-center gap-6 border-l border-white/30 pl-6">
+        <div class="flex items-center gap-6 border-l border-emerald-300/40 pl-6">
           <div class="text-right">
-            <p class="text-white/80 text-sm">Welcome back</p>
-            <p class="font-bold text-white text-lg">{{ auth.getName() }}</p>
+            <p class="text-emerald-700 text-sm">Welcome back</p>
+            <p class="font-bold text-emerald-900 text-lg">{{ auth.getName() }}</p>
           </div>
           <button mat-icon-button [matMenuTriggerFor]="userMenu">
-            <mat-icon class="text-3xl">account_circle</mat-icon>
+            <mat-icon class="text-3xl text-emerald-800">account_circle</mat-icon>
           </button>
         </div>
       </ng-container>
@@ -83,28 +80,31 @@
 </mat-toolbar>
 
 <!-- User Menu -->
-<mat-menu #userMenu="matMenu" class="mt-4">
-  <button mat-menu-item routerLink="/dashboard" *ngIf="auth.isUser() && !auth.isSeller()">
-    <mat-icon>dashboard</mat-icon> My Impact
-  </button>
-  <button mat-menu-item routerLink="/seller/dashboard" *ngIf="auth.isSeller()">
-    <mat-icon>storefront</mat-icon> Seller Dashboard
-  </button>
-  <button mat-menu-item routerLink="/admin" *ngIf="auth.isAdmin()">
-    <mat-icon>shield</mat-icon> Admin Panel
-  </button>
-  <mat-divider></mat-divider>
-  <button mat-menu-item (click)="logout()">
-    <mat-icon>logout</mat-icon> Logout
-  </button>
+<mat-menu #userMenu="matMenu" class="eco-menu">
+  <div class="px-2 py-1">
+    <button
+      (click)="logout()"
+      class="w-full flex items-center gap-2 px-4 py-2 rounded-md text-emerald-600 font-semibold transition-all duration-300 bg-emerald-50 hover:bg-emerald-100 hover:shadow-sm"
+    >
+      <mat-icon class="text-emerald-500">logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </div>
 </mat-menu>
 
+
 <!-- Page Content -->
-<div class="pt-16 min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 relative overflow-hidden">
+<div class="page-wrapper min-h-screen 
+            bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 
+            dark:bg-gray-950 dark:text-gray-100 
+            relative overflow-hidden py-12 px-6">
+
   <div class="absolute inset-0 -z-10 pointer-events-none">
     <div class="absolute top-10 -left-20 w-96 h-96 bg-emerald-400/25 rounded-full blur-3xl animate-pulse"></div>
     <div class="absolute bottom-0 right-0 w-80 h-80 bg-teal-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-lime-400/15 rounded-full blur-3xl animate-pulse delay-500"></div>
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-lime-400/15 rounded-full blur-3xl animate-pulse delay-500"
+    ></div>
   </div>
   <router-outlet></router-outlet>
 </div>

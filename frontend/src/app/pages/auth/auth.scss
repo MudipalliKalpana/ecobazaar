@@ -33,6 +33,7 @@
   left: 0;
   width: 50%;
   z-index: 2;
+  color: rgb(38, 34, 34);
 }
 
 .sign-up-container {
@@ -40,6 +41,7 @@
   width: 50%;
   opacity: 0;
   z-index: 1;
+  color: rgb(38, 34, 34);
 }
 
 form {
@@ -56,7 +58,7 @@ form {
 form h1 {
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #111827;
+  color: #29a36a;
 }
 
 form span {
@@ -98,7 +100,7 @@ button {
 }
 
 button:hover {
-  background: #ffd54f;
+  background: white;
   color: #1f2937;
   transform: translateY(-2px);
 }
@@ -128,7 +130,7 @@ button.ghost:hover {
 }
 
 .overlay {
-  background: linear-gradient(135deg, #29a36a, #00bfa5);
+  background: linear-gradient(135deg, #29a36a, #adb5b3);
   color: #ffffff;
   position: relative;
   left: -100%;

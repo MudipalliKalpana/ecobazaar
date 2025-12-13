@@ -1,23 +1,79 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
-import { AuthComponent } from './auth';
+@Component({
+  selector: 'app-auth',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './auth.html',
+  styleUrls: ['./auth.scss']
+})
+export class AuthComponent {
+  isSignUpMode = false;
+  loginForm!: FormGroup;
+  registerForm!: FormGroup;
+  isLoading = false;
 
-describe('Login', () => {
-  let component: Login;
-  let fixture: ComponentFixture<Login>;
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Login]
-    })
-    .compileComponents();
+    this.registerForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
+  }
 
-    fixture = TestBed.createComponent(Login);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  toggleMode() {
+    this.isSignUpMode = !this.isSignUpMode;
+  }
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  onLogin() {
+    if (this.loginForm.invalid) return;
+
+    this.isLoading = true;
+    const { email, password } = this.loginForm.value;
+
+    this.authService.login({ email, password }).subscribe({
+      next: () => {
+       
+        this.router.navigate(['/']); // Redirect to home or dashboard
+      },
+      error: (err) => {
+        console.error('Login error:', err);
+        alert('Login failed. Please check your credentials.');
+        this.isLoading = false;
+      }
+    });
+  }
+
+  onRegister() {
+    if (this.registerForm.invalid) return;
+
+    this.isLoading = true;
+    const { name, email, password } = this.registerForm.value;
+
+    this.authService.register({ name, email, password }).subscribe({
+      next: () => {
+        alert('Registration successful! You can now log in.');
+        this.toggleMode(); // Switch to login view
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Registration error:', err);
+        alert('Registration failed. Please try again.');
+        this.isLoading = false;
+      }
+    });
+  }
+}
